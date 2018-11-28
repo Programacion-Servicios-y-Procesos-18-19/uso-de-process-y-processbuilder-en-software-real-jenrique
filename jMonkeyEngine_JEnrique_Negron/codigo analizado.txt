@@ -1,0 +1,33 @@
+    private static String checkCgCompilerVersion(){
+        try {
+
+			//Crea el proceso con los comandos que necesita que realice
+            ProcessBuilder pb = new ProcessBuilder("cgc", "--version");
+
+			//Empieza el proceso
+            Process p = pb.start();
+            
+			//Guarda el flujo de errores en un objeto Scanner
+            Scanner scan = new Scanner(p.getErrorStream());
+			
+			//Obtiene la primera linea del flujo de datos y la guarda en una 
+			// cadena
+            String ln = scan.nextLine();
+
+			//Cierra el objeto scanner
+            scan.close();
+            
+			//Espera a que termine el proceso
+            p.waitFor();
+            
+			//Formatea la cadena obtenida por Scanner como interesa
+            String versionNumber = ln.split("\\s")[2];
+
+			//Devuelve la cadena formateada y lista para usar
+            return versionNumber.substring(0, versionNumber.length()-1);
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "IOEx", ex);
+        } catch (InterruptedException ex){
+        }
+        return null;
+	}
